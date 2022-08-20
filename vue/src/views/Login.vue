@@ -1,25 +1,15 @@
-<script setup>
-import { ref } from 'vue'
-
-defineProps({
-  msg: String
-})
-
-const count = ref(0)
-</script>
-
 <template>
-  <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
-      <div>
+  <div>
         <img class="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600" alt="Workflow">
         <h2 class="mt-6 text-center text-3xl tracking-tight font-bold text-gray-900">Sign in to your account</h2>
         <p class="mt-2 text-center text-sm text-gray-600">
           Or
-          <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500"> start your 14-day free trial </a>
+          <router-link :to="{name: 'Register'}" class="font-medium text-indigo-600 hover:text-indigo-500">
+            register for free
+          </router-link>
         </p>
       </div>
-      <form class="mt-8 space-y-6" action="#" method="POST">
+  <form class="mt-8 space-y-6" action="#" method="POST">
         <input type="hidden" name="remember" value="true">
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
@@ -38,9 +28,6 @@ const count = ref(0)
             <label for="remember-me" class="ml-2 block text-sm text-gray-900"> Remember me </label>
           </div>
 
-          <div class="text-sm">
-            <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500"> Forgot your password? </a>
-          </div>
         </div>
 
         <div>
@@ -55,12 +42,13 @@ const count = ref(0)
           </button>
         </div>
       </form>
-    </div>
-  </div>
 </template>
 
-<style scoped>
-.read-the-docs {
-  color: #888;
+<script>
+import { ref } from 'vue'
+
+export default {
 }
-</style>
+
+const count = ref(0)
+</script>
