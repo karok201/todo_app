@@ -4,15 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
-    public function register(Request $request): Response|Application|ResponseFactory
+    public function register(Request $request): JsonResponse
     {
         $data = $request->validate([
             'name' => 'required|string',
@@ -30,7 +29,33 @@ class AuthController extends Controller
         ]);
         $token = $user->createToken('main')->plainTextToken;
 
-        return response([
+        return response()->json([
+            'user' => $user,
+            'token' => $token,
+        ]);
+    }
+
+    public function login(Request $request) {
+        $credentials = $request->validate([
+            'email' => 'required|email|string|exists:users,email',
+            'password' => [
+                'required',
+                ],
+            'remember' => 'boolean',
+        ]);
+
+        $remember = $credentials['remember'] ?? false;
+        unset($credentials['remember']);
+
+        if (!Auth::attempt($credentials, $remember)) {
+            abort('422', 'The Provided credentials are not correct');
+        }
+
+        $user = Auth::user();
+
+        $token = $user->createToken('main')->plainTextToken;
+
+        return response()->json([
             'user' => $user,
             'token' => $token,
         ]);
