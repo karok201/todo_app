@@ -1,6 +1,6 @@
 <!-- This example requires Tailwind CSS v2.0+ -->
 <template>
-  <PageComponent title="Surveys">Content goes here</PageComponent>
+  <PageComponent title="Posts">Content goes here</PageComponent>
 </template>
 
 <script setup>

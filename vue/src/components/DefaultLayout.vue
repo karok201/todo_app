@@ -8,117 +8,197 @@
     <body class="h-full">
     ```
   -->
-  <div class="min-h-full">
-    <Disclosure as="nav" class="bg-gray-800" v-slot="{ open }">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
+  <div class="min-h-screen">
+    <div class="h-14 bg-gradient-to-r from-indigo-900 via-purple-900 to-pink-900 text-[12.5px]">
+      <div class="container mx-auto" style="max-width: 1750px;">
+        <div class="flex justify-between items-center h-14 text-white">
+
           <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <img class="h-8 w-8" src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=500" alt="Workflow" />
-            </div>
-            <div class="hidden md:block">
-              <div class="ml-10 flex items-baseline space-x-4">
-                <router-link
-                  v-for="item in navigation"
-                  active-class="bg-gray-900 text-white"
-                  :key="item.name"
-                  :to="item.to"
-                  :class="[this.$route.name === item.to.name ? '' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'px-3 py-2 rounded-md text-sm font-medium']"
-                >{{ item.name }}</router-link>
+            <div class="flex items-center">
+              <!-- Main -->
+              <div class="group" @mouseover="menuTip = true" @mouseleave="menuTip = false">
+                <div class="text-lg bg-gradient-to-r from-pink-800 via-purple-800 to-pink-800 rounded-md px-3 py-[1px]
+                cursor-pointer group-hover:from-pink-900 group-hover:via-purple-900 group-hover:to-pink-900">
+                  <span class="group-hover:text-gray-50">
+                    Cinemacult
+                  </span>
+                </div>
+              </div>
+
+              <!-- Top films -->
+              <div class="group px-4" @mouseover="homeTip = true" @mouseleave="homeTip = false">
+                <div class="py-[3.5px] cursor-pointer">
+                  <span class="text-[16px] group-hover:text-gray-400">
+                    Top films
+                  </span>
+                </div>
+              </div>
+
+              <!-- Categories -->
+              <div class="group" @mouseover="homeTip = true" @mouseleave="homeTip = false">
+                <div class="py-[3.5px] cursor-pointer">
+                  <span class="text-[16px] group-hover:text-gray-400">
+                    Categories
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-          <div class="hidden md:block">
-            <div class="ml-4 flex items-center md:ml-6">
-              <!-- Profile dropdown -->
-              <Menu as="div" class="ml-3 relative">
-                <div>
-                  <MenuButton class="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                    <span class="sr-only">Open user menu</span>
-                    <img class="h-8 w-8 rounded-full" alt="hello"  src=""/>
-                  </MenuButton>
-                </div>
-                <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
-                  <MenuItems class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                    <MenuItem>
-                      <a
-                        @click="logout"
-                        :class="['block px-4 py-2 text-sm text-gray-700 cursor-pointer']">
-                        Sign out
-                      </a>
-                    </MenuItem>
-                  </MenuItems>
-                </transition>
-              </Menu>
+
+          <div class="mr-56 group text-black">
+            <div class="font-light relative">
+              <input class="transition group-hover:placeholder-gray-500 h-7 bg-red-400 group-hover:bg-red-50 w-48
+              bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 focus:from-indigo-300 focus:via-purple-300 focus:to-pink-300
+              placeholder-amber-50 pl-9 rounded focus:outline-none focus:w-[450px] focus:bg-red-50 focus:placeholder-gray-50" placeholder="Search">
+              <div class="absolute top-0 left-0 h-full flex justify-center items-center">
+                <svg class="transition text-amber-50 group-hover:text-gray-300 pl-2 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>
+              </div>
             </div>
           </div>
-          <div class="-mr-2 flex md:hidden">
-            <!-- Mobile menu button -->
-            <DisclosureButton class="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-              <span class="sr-only">Open main menu</span>
-              <MenuIcon v-if="!open" class="block h-6 w-6" aria-hidden="true" />
-              <XIcon v-else class="block h-6 w-6" aria-hidden="true" />
-            </DisclosureButton>
+
+          <div class="flex items-center font-light">
+            <!-- Add task -->
+            <div class="group" @mouseover="addTip = true" @mouseleave="addTip = false">
+              <div class="py-1 px-1 group-hover:bg-pink-700 rounded mr-2 cursor-pointer">
+                <svg class="h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m7-7H5" /></svg>
+              </div>
+            </div>
+            <!-- User -->
+            <div class="group"
+                 @mouseover="profileTip = true"
+                 @mouseleave="profileTip = false"
+                 @click="profileDropdown = !profileDropdown">
+              <div class="py-[5px] px-1 rounded mr-2 cursor-pointer flex">
+                <svg class="h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+              </div>
+            </div>
+            <div v-if="profileDropdown" class="absolute top-10 right-12">
+              <div class="shadow rounded-lg bg-white border w-72 text-gray-400">
+                <!-- User -->
+                <div class="hover:bg-gray-200 mx-1 my-1 pb-px rounded-md">
+                  <a href="#" class="pl-2 flex items-center">
+                    <div>
+                      <svg class="h-14 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                    </div>
+                    <div class="pl-3 text-black">
+                      <div class="font-bold">
+                        Nikita
+                      </div>
+                      <div>
+                        babichenkona@gmail.com
+                      </div>
+                    </div>
+                  </a>
+                  <!-- Settings -->
+                  <div class="pl-2 pt-1 flex justify-between my-1 mx-1 cursor-pointer rounded-md">
+                    <div class="flex">
+                      <CogIcon class="h-6"/>
+                      <span class="pl-2 pt-px text-black">Settings</span>
+                    </div>
+                    <div class="pr-4">
+                      O then S
+                    </div>
+                  </div>
+                </div>
+
+                <div class="h-px bg-gray-200"></div>
+
+                <div class="pl-3 pt-1 flex justify-between my-1 mx-1 hover:bg-gray-200 cursor-pointer rounded-md">
+                  <div class="flex">
+                    <ColorSwatchIcon class="h-6"/>
+                    <span class="pl-2 pt-px text-black">Theme</span>
+                  </div>
+                  <div class="pr-4">
+                    O then T
+                  </div>
+                </div>
+
+                <div class="pl-3 pt-1 flex justify-between my-1 mx-1 hover:bg-gray-200 cursor-pointer rounded-md">
+                  <div class="flex">
+                    <PresentationChartBarIcon class="h-6"/>
+                    <span class="pl-2 pt-px text-black">Activity log</span>
+                  </div>
+                  <div class="pr-4">
+                    O then S
+                  </div>
+                </div>
+
+                <div class="pl-3 pt-1 flex justify-between my-1 mx-1 hover:bg-gray-200 cursor-pointer rounded-md">
+                  <div class="flex">
+                    <PrinterIcon class="h-6"/>
+                    <span class="pl-2 pt-px text-black">Print</span>
+                  </div>
+                  <div class="pr-4">
+                    Ctrl P
+                  </div>
+                </div>
+
+                <div class="pl-3 pt-1 flex justify-between my-1 mx-1 hover:bg-gray-200 cursor-pointer rounded-md">
+                  <div class="flex">
+                    <FolderAddIcon class="h-6"/>
+                    <span class="pl-2 pt-px text-black">Integrations</span>
+                  </div>
+                </div>
+
+                <div class="h-px bg-gray-200"></div>
+
+                <div class="pl-3 pt-1 flex justify-between my-1 mx-1 hover:bg-gray-200 cursor-pointer rounded-md">
+                  <div class="flex">
+                    <StarIcon class="h-6"/>
+                    <span class="pl-2 pt-px text-black">Upgrade to Pro</span>
+                  </div>
+                </div>
+
+                <div class="pl-3 pt-1 flex justify-between my-1 mx-1 hover:bg-gray-200 cursor-pointer rounded-md">
+                  <div class="flex">
+                    <UsersIcon class="h-6"/>
+                    <span class="pl-2 pt-px text-black">Upgrade to Business</span>
+                  </div>
+                </div>
+
+                <div class="pl-3 pt-1 flex justify-between my-1 mx-1 hover:bg-gray-200 cursor-pointer rounded-md">
+                  <div class="flex">
+                    <DeviceMobileIcon class="h-6"/>
+                    <span class="pl-2 pt-px text-black">Download apps</span>
+                  </div>
+                </div>
+
+                <div class="h-px bg-gray-200"></div>
+
+                <div class="pl-3 pt-1 flex justify-between my-1 mx-1 hover:bg-gray-200 cursor-pointer rounded-md">
+                  <div class="flex">
+                    <ArrowCircleRightIcon class="h-6"/>
+                    <span class="pl-2 pt-px text-black">Log out</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-      <DisclosurePanel class="md:hidden">
-        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          <router-link
-            v-for="item in navigation"
-            :key="item.name"
-            as="a"
-            active-class="bg-gray-900 text-white"
-            :to="item.to"
-            :class="[this.$route.name === item.to.name ? '' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block px-3 py-2 rounded-md text-base font-medium']"
-            :aria-current="item.current ? 'page' : undefined"
-          >{{ item.name }}</router-link>
-        </div>
-        <div class="pt-4 pb-3 border-t border-gray-700">
-          <div class="flex items-center px-5">
-            <div class="flex-shrink-0">
-              <img class="h-10 w-10 rounded-full" src="" alt="hello" />
-            </div>
-            <div class="ml-3">
-              <div class="text-base font-medium leading-none text-white">{{ user.name }}</div>
-              <div class="text-sm font-medium leading-none text-gray-400">{{ user.email }}</div>
-            </div>
-          </div>
-          <div class="mt-3 px-2 space-y-1">
-            <DisclosureButton as="a" @click="logout" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 cursor-pointer">Sign out</DisclosureButton>
-          </div>
-        </div>
-      </DisclosurePanel>
-    </Disclosure>
+    </div>
 
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { MenuIcon, XIcon } from '@heroicons/vue/outline'
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import {computed} from "vue";
 
 const navigation = [
   { name: 'Dashboard', to: {name: 'Dashboard' }},
-  { name: 'Surveys', to: { name: 'Surveys' }}
+  { name: 'Posts', to: { name: 'Posts' }}
 ]
 
 export default {
   components: {
-    Disclosure,
-    DisclosurePanel,
-    DisclosureButton,
-    Menu,
-    MenuIcon,
-    MenuItem,
-    MenuButton,
-    MenuItems,
-    XIcon
+
+  },
+  data() {
+    return {
+    }
   },
   setup() {
     const store = useStore();

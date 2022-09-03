@@ -3,7 +3,7 @@ import store from "../store/index.js";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import Dashboard from "../views/Dashboard.vue";
-import Surveys from "../views/Surveys.vue";
+import Posts from "../views/Posts.vue";
 import DefaultLayout from "../components/DefaultLayout.vue";
 import AuthLayout from "../components/AuthLayout.vue";
 
@@ -15,7 +15,7 @@ const routes = [
     meta: {requiresAuth: true},
     children: [
       {path: '/dashboard', name: 'Dashboard', component: Dashboard},
-      {path: '/surveys', name: 'Surveys', component: Surveys}
+      {path: '/posts', name: 'Posts', component: Posts}
     ]
   },
   {
