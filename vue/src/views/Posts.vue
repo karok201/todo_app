@@ -1,8 +1,19 @@
-<!-- This example requires Tailwind CSS v2.0+ -->
 <template>
-  <PageComponent title="Posts">Content goes here</PageComponent>
+  <PageComponent title="Posts">
+    Posts here
+  </PageComponent>
 </template>
 
-<script setup>
+<script>
 import PageComponent from "../components/PageComponent.vue";
+
+export default {
+  components: {
+    PageComponent
+  },
+  data() {
+    return {
+    }
+  },
+}
 </script>

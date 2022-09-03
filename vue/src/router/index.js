@@ -2,20 +2,20 @@ import {createRouter, createWebHistory} from "vue-router";
 import store from "../store/index.js";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
-import Dashboard from "../views/Dashboard.vue";
 import Posts from "../views/Posts.vue";
 import DefaultLayout from "../components/DefaultLayout.vue";
 import AuthLayout from "../components/AuthLayout.vue";
+import CreatePost from "../views/CreatePost.vue";
 
 const routes = [
   {
     path: '/',
-    redirect: '/dashboard',
+    redirect: '/posts',
     component: DefaultLayout,
     meta: {requiresAuth: true},
     children: [
-      {path: '/dashboard', name: 'Dashboard', component: Dashboard},
-      {path: '/posts', name: 'Posts', component: Posts}
+      {path: '/posts', name: 'Posts', component: Posts},
+      {path: '/posts/create', name: 'Create', component: CreatePost}
     ]
   },
   {
@@ -48,7 +48,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !store.state.user.token) {
     next({name: 'Login'})
   } else if (store.state.user.token && to.meta.isGuest) {
-    next({name: 'Dashboard'});
+    next({name: 'Posts'});
   } else {
     next();
   }
