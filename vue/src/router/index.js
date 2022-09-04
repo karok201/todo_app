@@ -6,6 +6,8 @@ import Posts from "../views/Posts.vue";
 import DefaultLayout from "../components/DefaultLayout.vue";
 import AuthLayout from "../components/AuthLayout.vue";
 import CreatePost from "../views/CreatePost.vue";
+import NProgress from "nprogress/nprogress.js";
+import 'nprogress/nprogress.css'
 
 const routes = [
   {
@@ -45,6 +47,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  NProgress.start();
   if (to.meta.requiresAuth && !store.state.user.token) {
     next({name: 'Login'})
   } else if (store.state.user.token && to.meta.isGuest) {
@@ -53,5 +56,9 @@ router.beforeEach((to, from, next) => {
     next();
   }
 })
+
+router.afterEach(() => {
+  NProgress.done();
+});
 
 export default router;

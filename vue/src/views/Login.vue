@@ -52,6 +52,8 @@
 
 <script setup>
 
+import NProgress from "nprogress/nprogress.js";
+import 'nprogress/nprogress.css';
 import store from "../store/index.js";
 import router from "../router/index.js";
 import {ref} from "vue";
@@ -65,6 +67,7 @@ const user = {
 let errorMsg = ref('');
 
 function login(ev) {
+  NProgress.start();
   ev.preventDefault();
 
   store.dispatch('login', user)
@@ -76,5 +79,6 @@ function login(ev) {
     .catch(err => {
       errorMsg.value = err.response.data.message
     });
+  NProgress.done();
 }
 </script>

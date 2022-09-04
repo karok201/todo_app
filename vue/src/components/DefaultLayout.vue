@@ -175,9 +175,10 @@
 </template>
 
 <script>
+import NProgress from "nprogress/nprogress.js";
+import 'nprogress/nprogress.css'
 import { useRouter } from 'vue-router';
 import { useStore } from "vuex";
-import { computed } from "vue";
 import store from "../store/index.js";
 
 const navigation = [
@@ -205,10 +206,12 @@ export default {
     const router = useRouter()
 
     function logout() {
+      NProgress.start();
       store.commit('logout');
       router.push({
         name: 'Login'
       })
+      NProgress.done();
     }
 
     return {

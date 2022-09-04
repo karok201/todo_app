@@ -113,6 +113,8 @@
 </template>
 
 <script>
+import NProgress from "nprogress/nprogress.js";
+import 'nprogress/nprogress.css'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import PageComponent from "../components/PageComponent.vue";
@@ -145,9 +147,11 @@ export default {
   },
   methods: {
     savePost() {
+      NProgress.start();
       this.post.long_text = this.$refs.myQuillEditor.getHTML();
 
       store.dispatch('savePost', this.post);
+      NProgress.done();
     },
   }
 }

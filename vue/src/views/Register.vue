@@ -56,6 +56,8 @@
 </template>
 
 <script setup>
+import NProgress from "nprogress/nprogress.js";
+import 'nprogress/nprogress.css';
 import store from "../store/index.js";
 import {useRouter} from "vue-router";
 
@@ -68,6 +70,7 @@ const user = {
 };
 
 function register(ev) {
+  NProgress.start();
   ev.preventDefault();
   store
     .dispatch('register', user)
@@ -76,6 +79,7 @@ function register(ev) {
         name: 'Posts'
       })
     })
+  NProgress.done();
 }
 
 </script>
