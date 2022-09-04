@@ -14,15 +14,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('surveys', static function (Blueprint $table) {
+        Schema::create('posts', static function (Blueprint $table) {
             $table->id();
             $table->string('title', 1000);
             $table->string('slug', 1000);
             $table->tinyInteger('status')->default(false);
-            $table->text('description')->nullable();
+            $table->text('short_text');
+            $table->text('long_text');
             $table->foreignIdFor(User::class, 'user_id');
             $table->timestamps();
-            $table->timestamp('expire_date')->nullable();
         });
     }
 
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('surveys');
+        Schema::dropIfExists('posts');
     }
 };

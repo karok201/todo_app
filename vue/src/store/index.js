@@ -4,9 +4,10 @@ import axiosClient from "../axios.js";
 const store = createStore({
   state: {
     user: {
-      data: JSON.parse(sessionStorage.USER),
+      data: sessionStorage.USER,
       token: sessionStorage.TOKEN,
-    }
+    },
+    posts: [],
   },
   getters: {},
   actions: {
@@ -23,9 +24,40 @@ const store = createStore({
           commit('setUser', data);
           return data;
         })
+    },
+    savePost({commit}, post) {
+      let response;
+      console.log(post)
+
+      if (post.id) {
+        response = axiosClient
+          .put(`/post/${post.id}`, post)
+          .then((res) => {
+            commit("updatePost", res.data);
+            return res
+          });
+      } else {
+        response = axiosClient
+          .post("/post", post)
+          .then((res) => {
+            commit("createPost", res.data);
+            return res
+          });
+      }
     }
   },
   mutations: {
+    createPost: (state, post) => {
+      state.posts = [...state.posts, post.data];
+    },
+    update: (state, post) => {
+      state.posts = state.posts.map((p) => {
+        if (p.id === post.data.id) {
+          return post.data
+        }
+        return p;
+      });
+    },
     logout: (state) => {
       state.user.data = {};
       state.user.token = null;

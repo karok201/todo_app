@@ -116,6 +116,7 @@
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import PageComponent from "../components/PageComponent.vue";
+import store from "../store/index.js";
 
 export default {
   components: {
@@ -130,6 +131,7 @@ export default {
         long_text: '',
         status: false,
         image: null,
+        user_id: store.state.user.data.id,
       },
       options: {
         debug: 'info',
@@ -141,19 +143,11 @@ export default {
       delta: undefined
     }
   },
-  watch: {
-    content (val) {
-      console.log(1)
-    }
-  },
   methods: {
-    showText() {
-      console.log(this.yep = this.$refs.myQuillEditor.getHTML())
-    },
     savePost() {
       this.post.long_text = this.$refs.myQuillEditor.getHTML();
 
-      console.log(this.post)
+      store.dispatch('savePost', this.post);
     },
   }
 }
