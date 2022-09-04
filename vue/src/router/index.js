@@ -6,6 +6,7 @@ import Posts from "../views/Posts.vue";
 import DefaultLayout from "../components/DefaultLayout.vue";
 import AuthLayout from "../components/AuthLayout.vue";
 import CreatePost from "../views/CreatePost.vue";
+import QuillEditor2 from "../views/QuillEditor2.vue";
 import NProgress from "nprogress/nprogress.js";
 import 'nprogress/nprogress.css'
 
@@ -17,7 +18,9 @@ const routes = [
     meta: {requiresAuth: true},
     children: [
       {path: '/posts', name: 'Posts', component: Posts},
-      {path: '/posts/create', name: 'Create', component: CreatePost}
+      {path: '/posts/create', name: 'PostCreate', component: CreatePost},
+      {path: '/posts/:slug', name: 'PostUpdate', component: CreatePost},
+      {path: '/editor', name: 'Editor', component: QuillEditor2}
     ]
   },
   {

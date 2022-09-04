@@ -58,7 +58,7 @@
 
           <div class="flex items-center font-light">
             <!-- Add task -->
-            <router-link :to="{name: 'Create'}" class="group" @mouseover="addTip = true" @mouseleave="addTip = false">
+            <router-link :to="{name: 'PostCreate'}" class="group" @mouseover="addTip = true" @mouseleave="addTip = false">
               <div class="py-1 px-1 group-hover:bg-pink-700 rounded mr-2 cursor-pointer">
                 <svg class="h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m7-7H5" /></svg>
               </div>

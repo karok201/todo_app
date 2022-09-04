@@ -17,8 +17,8 @@
               Image
             </label>
             <div class="mt-1 flex items-center">
-              <img v-if="post.image"
-                   :src="post.image"
+              <img v-if="post.image_url"
+                   :src="post.image_url"
                    :alt="post.title"
                    class="w-64 h-48 object-cover"
               />
@@ -27,7 +27,9 @@
               </span>
 
               <button type="button" class="relative overflow-hidden ml-5 rounded-md border border-gray-300 bg-white py-2 px-3 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                <input type="file" class="absolute right-0 left-0 top-0 bottom-0 opacity-0">
+                <input type="file"
+                       @change="onImageChoose"
+                       class="absolute right-0 left-0 top-0 bottom-0 opacity-0">
                 Change
               </button>
             </div>
@@ -73,10 +75,7 @@
               Long text
             </lable>
             <div class="mt-1">
-              <QuillEditor
-                v-model:content="post.long_text"
-                ref="myQuillEditor"
-                :options="options"/>
+              <editor v-model="post.long_text" />
             </div>
           </div>
           <!-- /Long text -->
@@ -102,6 +101,7 @@
 
           <div class="px-4 py-3 bg-gray-50 rounded-md text-right sm:px-6">
             <button type="submit"
+                    @submit="savePost"
                     class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
               Save
             </button>
@@ -116,50 +116,71 @@
 import NProgress from "nprogress/nprogress.js";
 import 'nprogress/nprogress.css'
 import { useToast } from "vue-toastification";
-import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import PageComponent from "../components/PageComponent.vue";
 import store from "../store/index.js";
+import router from "../router/index.js";
+import {ref} from "vue";
+import StarterKit from '@tiptap/starter-kit'
+import Editor from "../components/Editor.vue";
 
 export default {
   components: {
-    QuillEditor,
+    Editor,
     PageComponent
   },
-  setup() {
-    const toast = useToast();
 
-    return { toast };
-  },
-  data() {
-    return {
-      post: {
-        title: '',
-        short_text: '',
-        long_text: '',
-        status: false,
-        image: null,
-        user_id: store.state.user.data.id,
-      },
-      options: {
-        debug: 'info',
-        modules: {
-        },
-        placeholder: 'Compose an epic...',
-        theme: 'snow'
-      },
-      delta: undefined
+  computed: {
+    post: {
+      get() {
+        return this.$store.state.currentPost.data;
+      }
     }
   },
+
+  watch: {
+    post (newVal, oldVal) {
+      this.post = {
+        ...JSON.parse(JSON.stringify(newVal)),
+        status: newVal.status !== 'draft',
+      }
+    }
+  },
+
+  setup() {
+    const toast = useToast();
+    const initialData = ref("hello world!");
+
+    if (router.currentRoute.value.params.slug) {
+      store.dispatch('getPost', router.currentRoute.value.params.slug);
+    } else {
+      store.dispatch('clearCurrentPost');
+    }
+
+    return { toast, initialData };
+  },
+
   methods: {
+    onImageChoose(ev) {
+      const file = ev.target.files[0];
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.post.image = reader.result;
+
+        this.post.image_url = reader.result;
+      };
+      reader.readAsDataURL(file);
+    },
     savePost() {
       NProgress.start();
-      this.$refs.myQuillEditor.getHTML() === '<p><br></p>' ?
-        this.post.long_text = null : this.post.long_text = this.$refs.myQuillEditor.getHTML();
-
       store.dispatch('savePost', this.post)
         .then(() => {
-          this.toast.success('Post successfully created!');
+          if (router.currentRoute.value.params.slug) {
+            this.toast.success('Post successfully updated!');
+          } else {
+            this.toast.success('Post successfully created!');
+          }
         })
         .catch(err => {
           this.toast.error(err.response.data.message);

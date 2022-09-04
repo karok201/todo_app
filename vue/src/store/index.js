@@ -7,6 +7,9 @@ const store = createStore({
       data: sessionStorage.USER,
       token: sessionStorage.TOKEN,
     },
+    currentPost: {
+      data: {},
+    },
     posts: [],
   },
   getters: {},
@@ -25,39 +28,56 @@ const store = createStore({
           return data;
         })
     },
+    getPost({commit}, slug) {
+      commit("setCurrentPostLoading", true);
+      return axiosClient
+        .get(`/post/${slug}`)
+        .then((res) => {
+          commit("setCurrentPost", res.data);
+          commit("setCurrentPostLoading", false);
+          return res;
+        })
+        .catch((err) => {
+          commit("setCurrentPostLoading", false);
+          throw err;
+        });
+    },
     savePost({commit}, post) {
+      delete post.image_url;
       let response;
 
-      if (post.id) {
+      if (post.slug) {
         response = axiosClient
-          .put(`/post/${post.id}`, post)
+          .put(`/post/${post.slug}`, post)
           .then((res) => {
-            commit("updatePost", res.data);
+            commit("setCurrentPost", res.data);
             return res
           });
       } else {
         response = axiosClient
           .post("/post", post)
           .then((res) => {
-            commit("createPost", res.data);
+            commit("setCurrentPost", res.data);
             return res
           });
       }
 
       return response;
+    },
+    clearCurrentPost({commit}) {
+      commit("clearCurrentPost");
+      return true;
     }
   },
   mutations: {
-    createPost: (state, post) => {
-      state.posts = [...state.posts, post.data];
+    setCurrentPostLoading: (state, loading) => {
+      state.currentPost.loading = loading;
     },
-    update: (state, post) => {
-      state.posts = state.posts.map((p) => {
-        if (p.id === post.data.id) {
-          return post.data
-        }
-        return p;
-      });
+    setCurrentPost: (state, post) => {
+      state.currentPost.data = post.data;
+    },
+    clearCurrentPost: (state) => {
+      state.currentPost.data = {};
     },
     logout: (state) => {
       state.user.data = {};

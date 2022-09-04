@@ -13,6 +13,12 @@ class UpdatePostRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        $post = $this->route('post');
+
+        if ($this->user()->id !== $post->user_id) {
+            return false;
+        }
+
         return true;
     }
 
@@ -31,11 +37,12 @@ class UpdatePostRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'image' => 'nullable|string',
             'title' => 'required|string|max:1000',
             'user_id' => 'exists:users,id',
             'status' => 'required|boolean',
             'short_text' => 'required|string',
-            'long_text' => 'required|string',
+            'long_text' => 'required',
         ];
     }
 }
