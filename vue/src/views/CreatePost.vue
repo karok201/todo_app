@@ -100,7 +100,7 @@
           </div>
           <!-- /Status -->
 
-          <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+          <div class="px-4 py-3 bg-gray-50 rounded-md text-right sm:px-6">
             <button type="submit"
                     class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
               Save
@@ -115,6 +115,7 @@
 <script>
 import NProgress from "nprogress/nprogress.js";
 import 'nprogress/nprogress.css'
+import { useToast } from "vue-toastification";
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import PageComponent from "../components/PageComponent.vue";
@@ -124,6 +125,11 @@ export default {
   components: {
     QuillEditor,
     PageComponent
+  },
+  setup() {
+    const toast = useToast();
+
+    return { toast };
   },
   data() {
     return {
@@ -148,9 +154,16 @@ export default {
   methods: {
     savePost() {
       NProgress.start();
-      this.post.long_text = this.$refs.myQuillEditor.getHTML();
+      this.$refs.myQuillEditor.getHTML() === '<p><br></p>' ?
+        this.post.long_text = null : this.post.long_text = this.$refs.myQuillEditor.getHTML();
 
-      store.dispatch('savePost', this.post);
+      store.dispatch('savePost', this.post)
+        .then(() => {
+          this.toast.success('Post successfully created!');
+        })
+        .catch(err => {
+          this.toast.error(err.response.data.message);
+        });
       NProgress.done();
     },
   }

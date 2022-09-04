@@ -27,7 +27,6 @@ const store = createStore({
     },
     savePost({commit}, post) {
       let response;
-      console.log(post)
 
       if (post.id) {
         response = axiosClient
@@ -44,6 +43,8 @@ const store = createStore({
             return res
           });
       }
+
+      return response;
     }
   },
   mutations: {

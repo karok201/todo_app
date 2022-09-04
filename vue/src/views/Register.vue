@@ -58,8 +58,10 @@
 <script setup>
 import NProgress from "nprogress/nprogress.js";
 import 'nprogress/nprogress.css';
+import { useToast } from "vue-toastification";
 import store from "../store/index.js";
 import {useRouter} from "vue-router";
+
 
 const router = useRouter();
 const user = {
@@ -68,6 +70,8 @@ const user = {
   password: '',
   password_confirmation: ''
 };
+
+const toast = useToast();
 
 function register(ev) {
   NProgress.start();
@@ -78,6 +82,9 @@ function register(ev) {
       router.push({
         name: 'Posts'
       })
+    })
+    .catch(err => {
+      toast.error(err.response.data.message);
     })
   NProgress.done();
 }
